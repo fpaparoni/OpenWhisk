@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -20,16 +18,13 @@ import com.google.gson.JsonObject;
 /***
  * Action che prende in input un pdf base64
  * applica un immagine come logo e ritorna il pdf modificato come base64
- * @author federico
- *
  */
-
 public class LogoStamper {
 	
 	public static JsonObject main(JsonObject args) throws Exception {
 		
 		byte[] pdffile=Base64.getDecoder().decode(args.getAsJsonPrimitive("pdffile").getAsString());
-		byte[] imageFile=readByte("http://www.javastaff.com/wp-content/uploads/2016/08/cropped-logo.png");
+		byte[] imageFile=readByte("https://github.com/fpaparoni/OpenWhisk/raw/master/logo.png");
 		String filename = "logo.png";
 		
 		PDDocument document = PDDocument.load(pdffile);
