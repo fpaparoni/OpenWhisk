@@ -1,8 +1,6 @@
 package com.javastaff.openwhisk;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -50,13 +48,20 @@ public class LogoStamper {
 		return response;
 	}
 	
+	/**
+	 * Legge un file da un url e lo converte in array di byte
+	 * 
+	 * @param fileUrl
+	 * @return
+	 * @throws Exception
+	 */
 	public static byte[] readByte(String fileUrl) throws Exception {
 		URL url=new URL(fileUrl);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		InputStream is = null;
 		try {
 		  is = url.openStream ();
-		  byte[] byteChunk = new byte[4096]; // Or whatever size you want to read in at a time.
+		  byte[] byteChunk = new byte[4096];
 		  int n;
 
 		  while ( (n = is.read(byteChunk)) > 0 ) {
@@ -66,38 +71,10 @@ public class LogoStamper {
 		catch (IOException e) {
 		  System.err.printf ("Failed while reading bytes from %s: %s", url.toExternalForm(), e.getMessage());
 		  e.printStackTrace ();
-		  // Perform any other exception handling that's appropriate.
 		}
 		finally {
 		  if (is != null) { is.close(); }
 		}
 		return baos.toByteArray();
-	}
-	
-	public static void main(String[] args) throws Exception {
-		String filename = "timbro.png";
-		ClassLoader classLoader = LogoStamper.class.getClassLoader();
-		File imageFile=new File(classLoader.getResource(filename).getFile());
-		FileInputStream fis=new FileInputStream(imageFile);
-		System.out.println(imageFile.exists());
-//		String pdfFilePath = "/home/federico/pdf-test.pdf";
-//		String signatureImagePath = "/home/federico/timbro.png";
-//
-//		PDDocument document = PDDocument.load(new File(pdfFilePath));
-//		float scale = 0.5f;
-//		PDImageXObject ximage = PDImageXObject.createFromByteArray(document,
-//				Files.readAllBytes(Paths.get(signatureImagePath)), "logo.png");
-//		float deltaX = ximage.getWidth() * scale;
-//		float deltaY = ximage.getHeight() * scale;
-//
-//		PDPage page = (PDPage) document.getDocumentCatalog().getPages().get(0);
-//
-//		PDPageContentStream contentStream = new PDPageContentStream(document, page,
-//				PDPageContentStream.AppendMode.APPEND, true);
-//		contentStream.drawImage(ximage, page.getMediaBox().getUpperRightX() - deltaX,
-//				page.getMediaBox().getUpperRightY() - deltaY, deltaX, deltaY);
-//		contentStream.close();
-//
-//		document.save("/home/federico/pdf-test-output.pdf");
 	}
 }
